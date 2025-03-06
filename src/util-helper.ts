@@ -10,7 +10,6 @@ export const shortUUID = function (length: number = 10, allCaps = false): string
   return result;
 };
 
-
 export const throwIf = (condition: any, err: Error) => {
   if (!!condition) {
     throw err;

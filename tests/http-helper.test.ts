@@ -1,8 +1,6 @@
 import { objectToQueryString } from "../src/http-helper";
 
 describe("Http Helper functions", () => {
-
-
   test("objectToQueryString converts object to query string", () => {
     const obj = { name: "John", age: 30 };
     const queryString = objectToQueryString(obj);
@@ -14,5 +12,4 @@ describe("Http Helper functions", () => {
     const queryString = objectToQueryString(obj);
     expect(queryString).toBe("");
   });
-
 });
