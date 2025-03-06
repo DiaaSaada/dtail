@@ -46,7 +46,9 @@ jobs:
     runs-on: ubuntu-latest
     container: node:22-alpine
     #if: github.event_name == 'release' # Only runs on GitHub releases
-
+    permissions:
+      contents: read
+      id-token: write    
     steps:
 
       - name: Checkout repository
