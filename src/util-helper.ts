@@ -1,5 +1,3 @@
-import { createHash } from "crypto";
-
 export const shortUUID = function (length: number = 10, allCaps = false): string {
   const numbers = "0123456789";
   const upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -12,16 +10,6 @@ export const shortUUID = function (length: number = 10, allCaps = false): string
   return result;
 };
 
-export const objectToQueryString = function (obj: Record<string, any>): string {
-  const str: string[] = [];
-  for (const key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      const v = obj[key];
-      str.push(`${encodeURIComponent(key)}=${encodeURIComponent(v)}`);
-    }
-  }
-  return str.join("&");
-};
 
 export const throwIf = (condition: any, err: Error) => {
   if (!!condition) {
@@ -29,7 +17,7 @@ export const throwIf = (condition: any, err: Error) => {
   }
 };
 
-export const withinRange = function (num: number, min: number, max: number): number {
+export const limitInRange = function (num: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, num));
 };
 
@@ -58,8 +46,4 @@ export function isValidJson(jsonStr: string): boolean {
   } catch {
     return false;
   }
-}
-
-export function sha256(key: string): string {
-  return createHash("sha256").update(key).digest("hex");
 }

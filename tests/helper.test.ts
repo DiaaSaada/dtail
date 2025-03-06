@@ -1,13 +1,11 @@
 import {
   shortUUID,
-  objectToQueryString,
   throwIf,
-  withinRange,
+  limitInRange,
   sortObjectAlphabetically,
   isValidJsonObject,
   isValidJson,
-  sha256,
-} from "../src/helper";
+} from "../src/util-helper";
 
 describe("Helper functions", () => {
   test("shortUUID generates a string of specified length", () => {
@@ -20,18 +18,6 @@ describe("Helper functions", () => {
     expect(uuid).toMatch(/^[A-Z0-9]+$/);
   });
 
-  test("objectToQueryString converts object to query string", () => {
-    const obj = { name: "John", age: 30 };
-    const queryString = objectToQueryString(obj);
-    expect(queryString).toBe("name=John&age=30");
-  });
-
-  test("objectToQueryString handles empty object", () => {
-    const obj = {};
-    const queryString = objectToQueryString(obj);
-    expect(queryString).toBe("");
-  });
-
   test("throwIf throws error when condition is true", () => {
     expect(() => throwIf(true, new Error("Test error"))).toThrow("Test error");
   });
@@ -41,11 +27,11 @@ describe("Helper functions", () => {
   });
 
   test("withinRange returns number within range", () => {
-    expect(withinRange(5, 1, 10)).toBe(5);
+    expect(limitInRange(5, 1, 10)).toBe(5);
   });
 
   test("withinRange returns min when number is below range", () => {
-    expect(withinRange(-1, 1, 10)).toBe(1);
+    expect(limitInRange(-1, 1, 10)).toBe(1);
   });
 
   test("sortObjectAlphabetically sorts object keys alphabetically", () => {
@@ -78,16 +64,5 @@ describe("Helper functions", () => {
   test("isValidJson returns false for invalid JSON string", () => {
     const jsonString = '{"name": "John"';
     expect(isValidJson(jsonString)).toBe(false);
-  });
-
-  test("sha256 generates correct hash", () => {
-    const hash = sha256("test");
-    expect(hash).toBe("9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08");
-  });
-
-  test("sha256 generates different hash for different input", () => {
-    const hash1 = sha256("test1");
-    const hash2 = sha256("test2");
-    expect(hash1).not.toBe(hash2);
   });
 });
