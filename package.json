@@ -1,11 +1,17 @@
 {
   "name": "dtail",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "a Util Library for any TypeScript Project",
   "main": "dist/index.js",
-  "keywords": ["NPM", "TypeScript", "Utility", "Library"],
+  "keywords": [
+    "NPM",
+    "TypeScript",
+    "Utility",
+    "Library"
+  ],
   "author": "Diaa AbuSaaada <diaa.inbox@gmail.com>",
   "license": "MIT",
+  "homepage": "https://www.npmjs.com/package/dtail",
   "scripts": {
     "lint": "npx lint",
     "build": "tsc",
@@ -17,10 +23,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/DiaaSaada/dtail.git"
+    "url": "git+https://github.com/DiaaSaada/dtail.git"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "@faker-js/faker": "^9.5.1",
     "@types/jest": "^29.5.14",
@@ -36,5 +41,5 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4"
   },
-  "private": true
+  "private": false
 }

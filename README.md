@@ -3,7 +3,10 @@
 ![npm version](https://img.shields.io/badge/version-0.0.1-blue)
 ![license](https://img.shields.io/badge/license-MIT-green)
 
+
 A collection of utility functions gathered from my own projects. This package provides helper functions for dates, JSON validation, numbers, and HTTP requests. While still in early development, it's open for anyone to use and contribute.
+[npm-package](https://www.npmjs.com/package/dtail)
+
 
 ## Installation
 
