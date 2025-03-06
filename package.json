@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "a Util Library for any TypeScript Project",
   "main": "dist/index.js",
+  "keywords": ["NPM", "TypeScript", "Utility", "Library"],
+  "author": "Diaa AbuSaaada <diaa.inbox@gmail.com>",
+  "license": "MIT",
   "scripts": {
     "lint": "npx lint",
     "build": "tsc",
