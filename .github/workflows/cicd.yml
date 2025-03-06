@@ -24,6 +24,9 @@ jobs:
       - name: Run tests
         run: npm test
 
+      - name: Run NPM Audit
+        run: npm audit --audit-level=high
+
   prettier:
     name: Run Prettier
     runs-on: ubuntu-latest
@@ -39,7 +42,6 @@ jobs:
       - name: Run ESLint
         run: npm run prettier:fix
 
-
   publish:
     name: Publish to NPM
     needs: [test, prettier] # Runs only if tests and prettier pass
@@ -48,9 +50,8 @@ jobs:
     #if: github.event_name == 'release' # Only runs on GitHub releases
     permissions:
       contents: read
-      id-token: write    
+      id-token: write
     steps:
-
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -65,9 +66,8 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
-          registry-url: 'https://registry.npmjs.org'
+          node-version: "20.x"
+          registry-url: "https://registry.npmjs.org"
       - run: npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
