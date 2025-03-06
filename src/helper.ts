@@ -1,6 +1,5 @@
 import { createHash } from "crypto";
 
-
 export const shortUUID = function (length: number = 10, allCaps = false): string {
   const numbers = "0123456789";
   const upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -60,7 +59,6 @@ export function isValidJson(jsonStr: string): boolean {
     return false;
   }
 }
-
 
 export function sha256(key: string): string {
   return createHash("sha256").update(key).digest("hex");

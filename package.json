@@ -5,10 +5,18 @@
   "main": "dist/index.js",
   "scripts": {
     "lint": "npx lint",
-    "build": "tsc"
+    "build": "tsc",
+    "prettier": "prettier --check src/.",
+    "prettier:fix": "prettier --write src/ tests/",
+    "lint-fix": "eslint --fix .  ./**/*.js",
+    "test": "cross-env NODE_ENV=development jest --config jest.config.js",
+    "debug": "node --inspect-brk -r ts-node/register src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DiaaSaada/dtail.git"
   },
   "dependencies": {
-    "fs": "^0.0.1-security"
   },
   "devDependencies": {
     "@faker-js/faker": "^9.5.1",

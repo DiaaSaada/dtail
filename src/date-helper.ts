@@ -1,4 +1,4 @@
-import {ONE_MIN_IN_MILLISECONDS} from "./durations-in-seconds";
+import { ONE_MIN_IN_MILLISECONDS } from "./durations-in-seconds";
 
 export function getAgeFromBirthDate(dob: Date | string): number {
   const birthDate = typeof dob == "string" ? new Date(dob) : dob;
@@ -46,9 +46,6 @@ export const formatDateToDDMMYYYY = function (date: Date | string): string {
   return `${day}.${month}.${year}`;
 };
 
-
-
-
 export const getAgeFromBirthDay = function (dateString: Date | string) {
   const today = new Date();
   const birthDate = new Date(dateString);
@@ -70,4 +67,3 @@ export function timeDifferenceInMinutes(t1: string, t2: string): number {
     return 0;
   }
 }
-
