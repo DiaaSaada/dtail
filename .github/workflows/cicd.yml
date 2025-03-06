@@ -39,6 +39,7 @@ jobs:
       - name: Run ESLint
         run: npm run prettier:fix
 
+
   publish:
     name: Publish to NPM
     needs: [test, prettier] # Runs only if tests and prettier pass
@@ -47,6 +48,10 @@ jobs:
     #if: github.event_name == 'release' # Only runs on GitHub releases
 
     steps:
+      - name: Debug NPM Token
+        run: echo "Token length: ${#NODE_AUTH_TOKEN}"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Checkout repository
         uses: actions/checkout@v3
 
