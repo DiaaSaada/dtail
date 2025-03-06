@@ -1,0 +1,65 @@
+name: CI/CD for NPM Package (Alpine)
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    container: node:22-alpine # Using Alpine-based Node.js container
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
+
+  lint:
+    name: Run Linter
+    runs-on: ubuntu-latest
+    container: node:22-alpine
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run ESLint
+        run: npm run lint
+
+  publish:
+    name: Publish to NPM
+    needs: [test, lint] # Runs only if tests and linting pass
+    runs-on: ubuntu-latest
+    container: node:22-alpine
+    if: github.event_name == 'release' # Only runs on GitHub releases
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up NPM
+        run: npm config set registry https://registry.npmjs.org/
+
+      - name: Install dependencies
+        run: npm install --production
+
+      - name: Build package (if needed)
+        run: npm run build
+
+      - name: Publish to NPM
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
