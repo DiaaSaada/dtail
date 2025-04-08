@@ -59,11 +59,11 @@ export const getAgeFromBirthDay = function (dateString: Date | string) {
 
 export function timeDifferenceInMinutes(t1: string, t2: string): number {
   try {
-    let prevArrivalTime = new Date(t1);
-    let departsTime = new Date(t2);
-    let duration = departsTime.getTime() - prevArrivalTime.getTime();
+    const prevArrivalTime = new Date(t1);
+    const departsTime = new Date(t2);
+    const duration = departsTime.getTime() - prevArrivalTime.getTime();
     return Math.floor(duration / ONE_MIN_IN_MILLISECONDS);
-  } catch (err) {
+  } catch (err: unknown) {
     return 0;
   }
 }
