@@ -6,3 +6,4 @@ export const ONE_HOUR_IN_SECONDS = 3600;
 export const ONE_MONTH_IN_SECONDS = 2_592_000;
 export const THREE_MONTH_IN_SECONDS = 7_776_000;
 export const M15_IN_SECONDS = 900; // 15 minutes in seconds
+export const _24H_ms = 86_400_000; // 24 * 60 * 60 * 1000
