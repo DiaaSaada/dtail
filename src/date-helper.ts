@@ -75,3 +75,9 @@ export const isOlderThan24Hours = (_date: Date | null): boolean => {
   const twentyFourHoursAgo = new Date(now.getTime() - _24H_ms);
   return _date < twentyFourHoursAgo;
 };
+
+
+
+export function unixTsSeconds() {
+  return Math.floor(Date.now() / 1000);
+}
