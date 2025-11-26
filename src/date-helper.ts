@@ -1,4 +1,4 @@
-import { ONE_MIN_IN_MILLISECONDS } from "./durations-in-seconds";
+import { _24H_ms, ONE_MIN_IN_MILLISECONDS } from "./durations-in-seconds";
 
 export function getAgeFromBirthDate(dob: Date | string): number {
   const birthDate = typeof dob == "string" ? new Date(dob) : dob;
@@ -59,11 +59,25 @@ export const getAgeFromBirthDay = function (dateString: Date | string) {
 
 export function timeDifferenceInMinutes(t1: string, t2: string): number {
   try {
-    let prevArrivalTime = new Date(t1);
-    let departsTime = new Date(t2);
-    let duration = departsTime.getTime() - prevArrivalTime.getTime();
+    const prevArrivalTime = new Date(t1);
+    const departsTime = new Date(t2);
+    const duration = departsTime.getTime() - prevArrivalTime.getTime();
     return Math.floor(duration / ONE_MIN_IN_MILLISECONDS);
-  } catch (err) {
+  } catch (_: unknown) {
     return 0;
   }
+}
+
+
+export const isOlderThan24Hours = (_date: Date | null): boolean => {
+  if (!_date) return false;
+  const now = new Date();
+  const twentyFourHoursAgo = new Date(now.getTime() - _24H_ms);
+  return _date < twentyFourHoursAgo;
+};
+
+
+
+export function unixTsSeconds() {
+  return Math.floor(Date.now() / 1000);
 }

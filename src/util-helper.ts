@@ -10,8 +10,8 @@ export const shortUUID = function (length: number = 10, allCaps = false): string
   return result;
 };
 
-export const throwIf = (condition: any, err: Error) => {
-  if (!!condition) {
+export const throwIf = (condition: unknown, err: Error): asserts condition => {
+  if (condition) {
     throw err;
   }
 };
@@ -46,3 +46,24 @@ export function isValidJson(jsonStr: string): boolean {
     return false;
   }
 }
+
+
+export function assert(value: unknown, error: Error): asserts value {
+  if (!value) throw error;
+}
+
+function tryOrNull<T>(fn: () => T): T | null {
+  try {
+    return fn();
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * const shout = pipe(toUpper, exclaim);
+ * shout("hello");
+ * @param fns
+ */
+const pipe = (...fns: Function[]) => (input: any) =>
+  fns.reduce((acc, fn) => fn(acc), input);
