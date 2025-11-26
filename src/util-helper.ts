@@ -67,3 +67,13 @@ function tryOrNull<T>(fn: () => T): T | null {
  */
 const pipe = (...fns: Function[]) => (input: any) =>
   fns.reduce((acc, fn) => fn(acc), input);
+
+
+
+// Compare all keys deeply
+export function compareObjectsByKeyValues(a: Object, b: Object): boolean {
+  return Object.keys(a).every(
+    key => (a as any)[key] === (b as any)[key],
+  );
+}
+
