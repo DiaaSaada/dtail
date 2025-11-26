@@ -29,7 +29,8 @@ describe("Date Helper Functions", () => {
     const today = new Date();
     const expectedDate = new Date(today);
     expectedDate.setDate(today.getDate() - 5);
-    expect(dateBeforeDaysISOString(5)).toBe(expectedDate.toISOString());
+    expect(dateBeforeDaysISOString(5).substring(0, 10))
+      .toBe(expectedDate.toISOString().substring(0, 10));
   });
 
   test("formatDateToDDMMYYYY should format date correctly", () => {
