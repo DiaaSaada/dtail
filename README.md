@@ -5,7 +5,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue.svg)](https://www.typescriptlang.org/)
 [![Zero Dependencies](https://img.shields.io/badge/dependencies-0-brightgreen.svg)](package.json)
 
-A lightweight, zero-dependency TypeScript utility library for Node.js projects. Provides essential helper functions for **date manipulation**, **array operations**, **string utilities**, **JSON validation**, and **HTTP helpers**.
+A lightweight, zero-dependency TypeScript utility library for Node.js projects. Provides essential helper functions for **date manipulation**, **array operations**, **string utilities**, **JSON validation**, **HTTP helpers**, **functional programming**, and **data structures**.
 
 [NPM Package](https://www.npmjs.com/package/dtail) | [GitHub Repository](https://github.com/DiaaSaada/dtail)
 
@@ -18,6 +18,7 @@ A lightweight, zero-dependency TypeScript utility library for Node.js projects. 
 - **Lightweight** - Only import what you need
 - **Well Tested** - Comprehensive Jest test coverage
 - **Tree-Shakeable** - Modern ES module exports
+- **Rich Data Structures** - Counter, Deque, DefaultDict, and more
 
 ---
 
@@ -330,7 +331,7 @@ objectToQueryString({ filter: 'active', sort: 'name' }); // "filter=active&sort=
 
 #### `DefaultDict`
 
-A Python-inspired dictionary that returns a default value for missing keys. Perfect for counting and frequency analysis.
+A dictionary that returns a default value for missing keys. Perfect for counting and frequency analysis.
 
 ```typescript
 import { DefaultDict } from 'dtail';
@@ -351,6 +352,281 @@ counter.entries();      // [['apple', 2], ['banana', 1]]
 
 // Get top N entries
 counter.topN(1);        // [['apple', 2]]
+```
+
+---
+
+## Collections & Data Structures
+
+Powerful data structures for counting, queuing, and data manipulation.
+
+### Counter Class
+
+Count hashable objects with ease. Get frequency analysis and rankings.
+
+```typescript
+import { Counter } from 'dtail';
+
+// Count from iterable
+const counter = new Counter(['a', 'b', 'a', 'c', 'a', 'b']);
+counter.get('a');           // 3
+counter.get('b');           // 2
+counter.get('z');           // 0 (missing keys return 0)
+
+// Most common elements
+counter.mostCommon(2);      // [['a', 3], ['b', 2]]
+counter.mostCommon();       // All elements sorted by count
+
+// Update from another iterable
+counter.update(['a', 'a']);
+counter.get('a');           // 5
+
+// Subtract counts
+counter.subtract(['a']);
+counter.get('a');           // 4
+
+// Total count
+counter.total();            // Sum of all counts
+
+// Get unique elements
+counter.elements();         // ['a', 'b', 'c']
+```
+
+### range()
+
+Generate number sequences with start, stop, and step.
+
+```typescript
+import { range } from 'dtail';
+
+range(5);           // [0, 1, 2, 3, 4]
+range(1, 5);        // [1, 2, 3, 4]
+range(0, 10, 2);    // [0, 2, 4, 6, 8]
+range(5, 0, -1);    // [5, 4, 3, 2, 1]
+range(10, 0, -2);   // [10, 8, 6, 4, 2]
+```
+
+### zip() & zipLongest()
+
+Combine multiple arrays element-wise.
+
+```typescript
+import { zip, zipLongest } from 'dtail';
+
+// Zip stops at shortest array
+zip([1, 2, 3], ['a', 'b', 'c']);
+// [[1, 'a'], [2, 'b'], [3, 'c']]
+
+zip([1, 2], ['a', 'b'], [true, false]);
+// [[1, 'a', true], [2, 'b', false]]
+
+// zipLongest uses fill value for shorter arrays
+zipLongest(null, [1, 2, 3], ['a', 'b']);
+// [[1, 'a'], [2, 'b'], [3, null]]
+```
+
+### enumerate()
+
+Iterate with index - returns [index, element] pairs.
+
+```typescript
+import { enumerate } from 'dtail';
+
+enumerate(['a', 'b', 'c']);
+// [[0, 'a'], [1, 'b'], [2, 'c']]
+
+// Start from custom index
+enumerate(['a', 'b', 'c'], 1);
+// [[1, 'a'], [2, 'b'], [3, 'c']]
+
+// Use in loops
+for (const [i, item] of enumerate(items)) {
+  console.log(`${i}: ${item}`);
+}
+```
+
+### groupBy()
+
+Group array elements by a key function.
+
+```typescript
+import { groupBy } from 'dtail';
+
+const users = [
+  { name: 'Alice', role: 'admin' },
+  { name: 'Bob', role: 'user' },
+  { name: 'Charlie', role: 'admin' }
+];
+
+groupBy(users, u => u.role);
+// {
+//   admin: [{ name: 'Alice', role: 'admin' }, { name: 'Charlie', role: 'admin' }],
+//   user: [{ name: 'Bob', role: 'user' }]
+// }
+
+// Group numbers by even/odd
+groupBy([1, 2, 3, 4, 5], n => n % 2 === 0 ? 'even' : 'odd');
+// { odd: [1, 3, 5], even: [2, 4] }
+```
+
+### Deque Class
+
+Double-ended queue with efficient O(1) operations on both ends.
+
+```typescript
+import { Deque } from 'dtail';
+
+const deque = new Deque<number>();
+
+// Add to both ends
+deque.append(1);        // [1]
+deque.append(2);        // [1, 2]
+deque.appendLeft(0);    // [0, 1, 2]
+
+// Remove from both ends
+deque.pop();            // returns 2, deque is [0, 1]
+deque.popLeft();        // returns 0, deque is [1]
+
+// Peek without removing
+deque.peekLeft();       // First element
+deque.peekRight();      // Last element
+
+// Rotate elements
+const d = new Deque([1, 2, 3, 4, 5]);
+d.rotate(2);            // [4, 5, 1, 2, 3]
+d.rotate(-2);           // [1, 2, 3, 4, 5]
+
+// Max length (auto-removes from opposite end)
+const limited = new Deque([1, 2, 3], 3);
+limited.append(4);      // [2, 3, 4] - 1 was removed
+
+// Extend from iterables
+deque.extend([4, 5]);       // Add to right
+deque.extendLeft([0, -1]);  // Add to left
+```
+
+### Binary Search (bisect)
+
+Binary search functions for sorted arrays. Find insertion points and maintain sorted order.
+
+```typescript
+import { bisect, bisectLeft, bisectRight, insort, insortLeft } from 'dtail';
+
+const sorted = [1, 3, 5, 7, 9];
+
+// Find insertion point
+bisectLeft(sorted, 5);   // 2 (insert before existing 5)
+bisectRight(sorted, 5);  // 3 (insert after existing 5)
+bisect(sorted, 5);       // 3 (alias for bisectRight)
+
+// Insert maintaining sort order
+insort(sorted, 4);       // sorted is now [1, 3, 4, 5, 7, 9]
+insortLeft(sorted, 5);   // Insert before existing 5s
+
+// Useful for grade lookup
+const grades = [60, 70, 80, 90];
+const letters = ['F', 'D', 'C', 'B', 'A'];
+letters[bisect(grades, 85)]; // 'B'
+letters[bisect(grades, 92)]; // 'A'
+```
+
+### Set Operations
+
+Set operations without converting to Set objects.
+
+```typescript
+import {
+  setUnion,
+  setIntersection,
+  setDifference,
+  setSymmetricDifference,
+  isSubset,
+  isSuperset,
+  isDisjoint
+} from 'dtail';
+
+const a = [1, 2, 3, 4];
+const b = [3, 4, 5, 6];
+
+setUnion(a, b);               // [1, 2, 3, 4, 5, 6]
+setIntersection(a, b);        // [3, 4]
+setDifference(a, b);          // [1, 2]
+setSymmetricDifference(a, b); // [1, 2, 5, 6]
+
+isSubset([1, 2], [1, 2, 3]);  // true
+isSuperset([1, 2, 3], [1, 2]); // true
+isDisjoint([1, 2], [3, 4]);   // true
+```
+
+### Functional Utilities
+
+Functional programming helpers for common operations.
+
+```typescript
+import { sum, any, all, sorted, reversed, min, max } from 'dtail';
+
+// Sum with optional start value
+sum([1, 2, 3, 4]);          // 10
+sum([1, 2, 3], 10);         // 16
+
+// Any/All with optional predicate
+any([0, false, 'hello']);   // true (truthy check)
+any([1, 2, 3], x => x > 2); // true
+all([1, 2, 3]);             // true
+all([1, 2, 3], x => x > 0); // true
+
+// Non-mutating sorted (unlike Array.sort)
+const nums = [3, 1, 4, 1, 5];
+sorted(nums);                        // [1, 1, 3, 4, 5] - original unchanged
+sorted(nums, undefined, true);       // [5, 4, 3, 1, 1] - reversed
+
+// Sort by key function
+const items = [{n: 3}, {n: 1}, {n: 2}];
+sorted(items, x => x.n);             // [{n: 1}, {n: 2}, {n: 3}]
+
+// Non-mutating reversed
+reversed([1, 2, 3]);                 // [3, 2, 1]
+
+// Min/Max with optional key function
+min([3, 1, 4, 1, 5]);                // 1
+max([3, 1, 4, 1, 5]);                // 5
+min(items, x => x.n);                // {n: 1}
+max(items, x => x.n);                // {n: 3}
+```
+
+### Itertools-style Functions
+
+Combinatorics and iteration utilities.
+
+```typescript
+import { chain, repeat, cycle, product, permutations, combinations } from 'dtail';
+
+// Chain - combine multiple arrays
+chain([1, 2], [3, 4], [5]);  // [1, 2, 3, 4, 5]
+
+// Repeat value n times
+repeat('x', 3);              // ['x', 'x', 'x']
+
+// Cycle through array n times
+cycle([1, 2], 3);            // [1, 2, 1, 2, 1, 2]
+
+// Cartesian product
+product([1, 2], ['a', 'b']);
+// [[1, 'a'], [1, 'b'], [2, 'a'], [2, 'b']]
+
+product([0, 1], [0, 1], [0, 1]);
+// All 3-bit binary combinations
+
+// Permutations
+permutations([1, 2, 3]);
+// [[1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], [3,2,1]]
+
+permutations([1, 2, 3], 2);  // Length-2 permutations
+// [[1,2], [1,3], [2,1], [2,3], [3,1], [3,2]]
+
+// Combinations
+combinations([1, 2, 3, 4], 2);
+// [[1,2], [1,3], [1,4], [2,3], [2,4], [3,4]]
 ```
 
 ---
@@ -399,11 +675,13 @@ const age = getAgeFromBirthDate('2000-01-01');
 ## Use Cases
 
 - **API Development** - Generate unique IDs, validate JSON, build query strings
-- **Data Processing** - Chunk large arrays, flatten nested data structures
+- **Data Processing** - Chunk large arrays, flatten nested data, groupBy for aggregations
 - **User Management** - Calculate ages, format dates, handle timestamps
-- **Caching Systems** - Use duration constants for TTL configuration
+- **Caching Systems** - Use duration constants for TTL configuration, Deque for LRU
 - **Form Validation** - Validate inputs, clamp numeric ranges
-- **Analytics** - Count occurrences with DefaultDict, get top N items
+- **Analytics** - Counter for frequency analysis, mostCommon for rankings
+- **Algorithm Implementation** - bisect for binary search, permutations/combinations
+- **Functional Programming** - range, zip, enumerate, groupBy, sorted, reversed
 
 ---
 
@@ -448,10 +726,10 @@ MIT License - see [LICENSE](./LICENSE) for details.
 
 ## Author
 
-**Diaa AbuSaaada** - [diaa.inbox@gmail.com](mailto:diaa.inbox@gmail.com)
+**Diaa AbuSaada** - [diaa.inbox[AT]gmail.com]
 
 ---
 
 ## Keywords
 
-typescript utilities, javascript utils, date helper, array chunk, uuid generator, json validator, query string builder, lodash alternative, underscore alternative, node utilities, npm utility library, typescript helpers, date formatting, array manipulation, object utilities, zero dependency utilities
+typescript utilities, javascript utils, date helper, array chunk, uuid generator, json validator, query string builder, lodash alternative, underscore alternative, node utilities, npm utility library, typescript helpers, date formatting, array manipulation, object utilities, zero dependency utilities, counter class, deque typescript, range function, zip arrays, enumerate javascript, groupby typescript, bisect binary search, set operations, permutations combinations, functional programming, data structures, collections

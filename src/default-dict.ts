@@ -1,8 +1,10 @@
+/**
+ * DefaultDict - Dictionary with default values for missing keys
+ */
 export class DefaultDict {
   private data: Record<string, number> = {};
 
-  constructor(private defaultValue: number = 0) {
-  }
+  constructor(private defaultValue: number = 0) {}
 
   get(key: string): number {
     if (!(key in this.data)) {
@@ -26,7 +28,6 @@ export class DefaultDict {
   entries() {
     return Object.entries(this.data);
   }
-
 
   topN(n: number): Array<[string, number]> {
     return Object.entries(this.data)
