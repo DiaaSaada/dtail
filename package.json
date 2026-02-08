@@ -1,6 +1,6 @@
 {
   "name": "dtail",
-  "version": "0.0.4",
+  "version": "1.0.1",
   "description": "a Util Library for any TypeScript Project",
   "main": "dist/index.js",
   "keywords": [
