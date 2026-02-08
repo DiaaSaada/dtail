@@ -26,4 +26,11 @@ export class DefaultDict {
   entries() {
     return Object.entries(this.data);
   }
+
+
+  topN(n: number): Array<[string, number]> {
+    return Object.entries(this.data)
+      .sort((a, b) => b[1] - a[1]) // descending by value
+      .slice(0, n);
+  }
 }
